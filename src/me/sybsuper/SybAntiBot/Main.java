@@ -137,7 +137,9 @@ public class Main extends JavaPlugin {
 									sender.sendMessage(applyStuff(config.getString("return.true"), p, pitch, yaw));
 									logToFile(applyStuff(config.getString("log.true"), p, pitch, yaw));
 								} else {
-									p.teleport(locOld);
+									if (config.getBoolean("setback")) {
+										p.teleport(locOld);
+									}
 									sender.sendMessage(applyStuff(config.getString("return.false"), p, pitch, yaw));
 									logToFile(applyStuff(config.getString("log.false"), p, pitch, yaw));
 								}

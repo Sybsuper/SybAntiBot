@@ -19,6 +19,7 @@ ores:
   - QUARTZ_ORE
   - LOG
 checkChanceOnOreMine: 0.05
+setback: false
 commands:
   - "kick %player% Bots are not allowed."
 return:
