@@ -88,12 +88,15 @@ public class Main extends JavaPlugin {
 		if (sender.hasPermission("sybantibot.use")) {
 			if (args.length >= 1) {
 				if (args[0].equalsIgnoreCase("reload")) {
-					if (sender.hasPermission("sybantibot.reload"))
+					if (sender.hasPermission("sybantibot.reload")) {
 						reloadConfig();
-					config = getConfig();
-					config.options().copyDefaults(true);
-					saveConfig();
-					sender.sendMessage(ChatColor.DARK_GREEN + "Successfully reloaded config files.");
+						config = getConfig();
+						config.options().copyDefaults(true);
+						saveConfig();
+						sender.sendMessage(ChatColor.DARK_GREEN + "Successfully reloaded config files.");
+					} else {
+						sender.sendMessage(ChatColor.RED + "You don't have permission to execute this command.");
+					}
 					return true;
 				}
 				Player p = Bukkit.getPlayer(args[0]);
