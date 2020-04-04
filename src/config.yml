@@ -1,3 +1,7 @@
+# Copyright (c) 2020 Sybsuper
+# All Rights Reserved
+#
+# Do not use this code without permission of the developer.
 ticksBeforeCheck: 4
 maxDifference: 0.025
 delayBeforeRunBotCheck: 100

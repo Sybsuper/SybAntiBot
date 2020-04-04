@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2020 Sybsuper
+ * All Rights Reserved
+ *
+ * Do not use this code without permission of the developer.
+ */
+
 package me.sybsuper.SybAntiBot.listeners;
 
 import me.sybsuper.SybAntiBot.Main;

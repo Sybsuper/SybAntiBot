@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2020 Sybsuper
+ * All Rights Reserved
+ *
+ * Do not use this code without permission of the developer.
+ */
+
 package me.sybsuper.SybAntiBot;
 
 import me.sybsuper.SybAntiBot.listeners.BreakOre;
@@ -26,6 +33,7 @@ public class Main extends JavaPlugin {
 	public List<String> isBeingChecked;
 	public List<String> isBeingChecked2;
 	public File logFile;
+
 	@Override
 	public void onEnable() {
 		isBeingChecked = new ArrayList<>();
