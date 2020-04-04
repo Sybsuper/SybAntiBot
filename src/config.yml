@@ -17,15 +17,27 @@ ores:
   - REDSTONE_ORE
   - QUARTZ_ORE
   - LOG
+  - OAK_LOG
+  - BIRCH_LOG
+  - JUNGLE_LOG
+  - ACACIA_LOG
+  - DARK_OAK_LOG
+  - SPRUCE_LOG
+messages:
+  reloadSuccess: "&2Successfully reloaded config files."
+  reloadNoPermission: "&cYou don't have permission to execute this command."
+  playerAlreadyBeingChecked: "&cThat player is already being checked."
+  playerDoesNotExist: "&cThat player does not exist."
+  noPermission: "&cYou don't have permission to execute this command."
 checkChanceOnOreMine: 0.05
 setback: false
 enableBypassPermission: true
 commands:
   - "kick %player% Bots are not allowed."
 return:
-  true: "&4%player% is probably a bot. (Pitch: %pitch%, Yaw: %yaw%)"
-  false: "&2%player% is not a bot. (Pitch: %pitch%, Yaw: %yaw%)"
+  bot: "&4%player% is probably a bot. (Pitch: %pitch%, Yaw: %yaw%)"
+  noBot: "&2%player% is not a bot. (Pitch: %pitch%, Yaw: %yaw%)"
 log:
   enable: true
-  true: "%player% is a bot. p: %pitch%, y: %yaw%"
-  false: "%player% isn''t a bot. p: %pitch%, y: %yaw%"
+  bot: "%player% is a bot. p: %pitch%, y: %yaw%"
+  noBot: "%player% is not a bot. p: %pitch%, y: %yaw%"

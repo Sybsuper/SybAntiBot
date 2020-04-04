@@ -36,31 +36,7 @@ public class Main extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		isBeingChecked = new ArrayList<>();
-		isBeingChecked2 = new ArrayList<>();
-		config = getConfig();
-		config.options().copyDefaults(true);
-		saveConfig();
-		boolean isCorrect = config.isInt("delayBeforeRunBotCheck") && config.isDouble("default.yaw") && config.isDouble("default.pitch") && config.isDouble("maxDifference") && config.isInt("ticksBeforeCheck") && config.isList("commands");
-		if (!isCorrect) {
-			Logger l = Bukkit.getLogger();
-			l.log(Level.SEVERE, "There's something wrong in the 'plugins/SybAntiBot/config.yml' file, please check it.");
-		}
-		if (config.getBoolean("log.enable")) {
-			File dataFolder = getDataFolder();
-			if (!dataFolder.exists()) {
-				dataFolder.mkdir();
-			}
-			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-			logFile = new File(getDataFolder(), "log " + timestamp.toString().split(" ")[0] + ".txt");
-			if (!logFile.exists()) {
-				try {
-					logFile.createNewFile();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+		load();
 		Bukkit.getPluginManager().registerEvents(new BreakOre(this), this);
 	}
 
@@ -85,17 +61,15 @@ public class Main extends JavaPlugin {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (sender.hasPermission("sybantibot.use")) {
+		if (sender.hasPermission("sybantibot.isbot")) {
 			if (args.length >= 1) {
 				if (args[0].equalsIgnoreCase("reload")) {
 					if (sender.hasPermission("sybantibot.reload")) {
 						reloadConfig();
-						config = getConfig();
-						config.options().copyDefaults(true);
-						saveConfig();
-						sender.sendMessage(ChatColor.DARK_GREEN + "Successfully reloaded config files.");
+						load();
+						sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("messages.reloadSuccess")));
 					} else {
-						sender.sendMessage(ChatColor.RED + "You don't have permission to execute this command.");
+						sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("messages.reloadNoPermission")));
 					}
 					return true;
 				}
@@ -134,33 +108,61 @@ public class Main extends JavaPlugin {
 									for (String cmd : commands) {
 										Bukkit.getServer().dispatchCommand(getServer().getConsoleSender(), applyStuff(cmd, p, pitch, yaw));
 									}
-									sender.sendMessage(applyStuff(config.getString("return.true"), p, pitch, yaw));
-									logToFile(applyStuff(config.getString("log.true"), p, pitch, yaw));
+									sender.sendMessage(applyStuff(config.getString("return.bot"), p, pitch, yaw));
+									logToFile(applyStuff(config.getString("log.bot"), p, pitch, yaw));
 								} else {
 									if (config.getBoolean("setback")) {
 										p.teleport(locOld);
 									}
-									sender.sendMessage(applyStuff(config.getString("return.false"), p, pitch, yaw));
-									logToFile(applyStuff(config.getString("log.false"), p, pitch, yaw));
+									sender.sendMessage(applyStuff(config.getString("return.noBot"), p, pitch, yaw));
+									logToFile(applyStuff(config.getString("log.noBot"), p, pitch, yaw));
 								}
 								isBeingChecked2.remove(p.getUniqueId().toString());
 							}
 						}.runTaskLater(this, config.getInt("ticksBeforeCheck"));
 						return true;
 					} else {
-						sender.sendMessage(ChatColor.RED + "That player is already being checked.");
+						sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("messages.playerAlreadyBeingChecked")));
 						return true;
 					}
 				} else {
-					sender.sendMessage(ChatColor.RED + "That player does not exist.");
+					sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("messages.playerDoesNotExist")));
 					return true;
 				}
 			} else {
 				return false;
 			}
 		} else {
-			sender.sendMessage(ChatColor.RED + "You don't have permission to execute this command.");
+			sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("messages.noPermission")));
 			return true;
+		}
+	}
+
+	private void load() {
+		isBeingChecked = new ArrayList<>();
+		isBeingChecked2 = new ArrayList<>();
+		config = getConfig();
+		config.options().copyDefaults(true);
+		saveConfig();
+		boolean isCorrect = config.isInt("delayBeforeRunBotCheck") && config.isDouble("default.yaw") && config.isDouble("default.pitch") && config.isDouble("maxDifference") && config.isInt("ticksBeforeCheck") && config.isList("commands");
+		if (!isCorrect) {
+			Logger l = Bukkit.getLogger();
+			l.log(Level.SEVERE, "There's something wrong with the 'plugins/SybAntiBot/config.yml' file, please check it.");
+		}
+		if (config.getBoolean("log.enable")) {
+			File dataFolder = getDataFolder();
+			if (!dataFolder.exists()) {
+				dataFolder.mkdir();
+			}
+			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+			logFile = new File(getDataFolder(), "log " + timestamp.toString().split(" ")[0] + ".txt");
+			if (!logFile.exists()) {
+				try {
+					logFile.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 }
