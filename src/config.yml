@@ -21,7 +21,10 @@ ores:
 checkChanceOnOreMine: 0.05
 commands:
   - "kick %player% Bots are not allowed."
-returnTrue: "&4%player% is probably a bot. (Pitch: %pitch%, Yaw: %yaw%)"
-returnFalse: "&2%player% is not a bot. (Pitch: %pitch%, Yaw: %yaw%)"
-logTrue: "%player% is a bot. p: %pitch%, y: %yaw%"
-logFalse: "%player% isn''t a bot. p: %pitch%, y: %yaw%"
+return:
+  true: "&4%player% is probably a bot. (Pitch: %pitch%, Yaw: %yaw%)"
+  false: "&2%player% is not a bot. (Pitch: %pitch%, Yaw: %yaw%)"
+log:
+  enable: true
+  true: "%player% is a bot. p: %pitch%, y: %yaw%"
+  false: "%player% isn''t a bot. p: %pitch%, y: %yaw%"

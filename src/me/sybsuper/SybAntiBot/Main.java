@@ -46,17 +46,19 @@ public class Main extends JavaPlugin {
 			Logger l = Bukkit.getLogger();
 			l.log(Level.SEVERE, "There's something wrong in the 'plugins/SybAntiBot/config.yml' file, please check it.");
 		}
-		File dataFolder = getDataFolder();
-		if (!dataFolder.exists()) {
-			dataFolder.mkdir();
-		}
-		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-		logFile = new File(getDataFolder(), "log " + timestamp.toString().split(" ")[0] + ".txt");
-		if (!logFile.exists()) {
-			try {
-				logFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
+		if (config.getBoolean("log.enabled")) {
+			File dataFolder = getDataFolder();
+			if (!dataFolder.exists()) {
+				dataFolder.mkdir();
+			}
+			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+			logFile = new File(getDataFolder(), "log " + timestamp.toString().split(" ")[0] + ".txt");
+			if (!logFile.exists()) {
+				try {
+					logFile.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		Bukkit.getPluginManager().registerEvents(new BreakOre(this), this);
@@ -67,24 +69,27 @@ public class Main extends JavaPlugin {
 	}
 
 	public void logToFile(String message) {
-		try {
-			FileWriter fw = new FileWriter(logFile, true);
-			PrintWriter pw = new PrintWriter(fw);
-			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-			pw.println("[" + timestamp + "] " + message);
-			pw.flush();
-			pw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (config.getBoolean("log.enabled")) {
+			try {
+				FileWriter fw = new FileWriter(logFile, true);
+				PrintWriter pw = new PrintWriter(fw);
+				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+				pw.println("[" + timestamp + "] " + message);
+				pw.flush();
+				pw.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (sender.hasPermission("sybantibot.rotate")) {
+		if (sender.hasPermission("sybantibot.use")) {
 			if (args.length >= 1) {
 				if (args[0].equalsIgnoreCase("reload")) {
-					reloadConfig();
+					if (sender.hasPermission("sybantibot.reload"))
+						reloadConfig();
 					config = getConfig();
 					config.options().copyDefaults(true);
 					saveConfig();
@@ -126,12 +131,12 @@ public class Main extends JavaPlugin {
 									for (String cmd : commands) {
 										Bukkit.getServer().dispatchCommand(getServer().getConsoleSender(), applyStuff(cmd, p, pitch, yaw));
 									}
-									sender.sendMessage(applyStuff(config.getString("returnTrue"), p, pitch, yaw));
-									logToFile(applyStuff(config.getString("logTrue"), p, pitch, yaw));
+									sender.sendMessage(applyStuff(config.getString("return.true"), p, pitch, yaw));
+									logToFile(applyStuff(config.getString("log.true"), p, pitch, yaw));
 								} else {
 									p.teleport(locOld);
-									sender.sendMessage(applyStuff(config.getString("returnFalse"), p, pitch, yaw));
-									logToFile(applyStuff(config.getString("logFalse"), p, pitch, yaw));
+									sender.sendMessage(applyStuff(config.getString("return.false"), p, pitch, yaw));
+									logToFile(applyStuff(config.getString("log.false"), p, pitch, yaw));
 								}
 								isBeingChecked2.remove(p.getUniqueId().toString());
 							}
