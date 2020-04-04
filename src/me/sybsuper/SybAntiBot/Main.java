@@ -46,7 +46,7 @@ public class Main extends JavaPlugin {
 			Logger l = Bukkit.getLogger();
 			l.log(Level.SEVERE, "There's something wrong in the 'plugins/SybAntiBot/config.yml' file, please check it.");
 		}
-		if (config.getBoolean("log.enabled")) {
+		if (config.getBoolean("log.enable")) {
 			File dataFolder = getDataFolder();
 			if (!dataFolder.exists()) {
 				dataFolder.mkdir();
@@ -69,7 +69,7 @@ public class Main extends JavaPlugin {
 	}
 
 	public void logToFile(String message) {
-		if (config.getBoolean("log.enabled")) {
+		if (config.getBoolean("log.enable")) {
 			try {
 				FileWriter fw = new FileWriter(logFile, true);
 				PrintWriter pw = new PrintWriter(fw);
