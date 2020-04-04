@@ -1,0 +1,9 @@
+name: SybAntiBot
+main: me.sybsuper.SybAntiBot.Main
+version: 1.0
+commands:
+  rotate:
+    aliases: [rot,turn,isbot]
+    permission: sybrotate.rotate
+    permission-message: You don't have permission to execute this command.
+    usage: /rot <player> <yaw> [<pitch>]

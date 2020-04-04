@@ -1,0 +1,23 @@
+ticksBeforeCheck: 4
+maxDifference: 0.025
+delayBeforeRunBotCheck: 100
+default:
+  yaw: 3.0
+  pitch: 3.0
+ores:
+  - IRON_ORE
+  - GOLD_ORE
+  - DIAMOND_ORE
+  - EMERALD_ORE
+  - COAL_ORE
+  - LAPIS_ORE
+  - REDSTONE_ORE
+  - QUARTZ_ORE
+  - LOG
+checkChanceOnOreMine: 0.05
+commands:
+  - "kick %player% Bots are not allowed."
+returnTrue: "&4%player% is probably a bot. (Pitch: %pitch%, Yaw: %yaw%)"
+returnFalse: "&2%player% is not a bot. (Pitch: %pitch%, Yaw: %yaw%)"
+logTrue: "%player% is a bot. p: %pitch%, y: %yaw%"
+logFalse: "%player% isn''t a bot. p: %pitch%, y: %yaw%"
