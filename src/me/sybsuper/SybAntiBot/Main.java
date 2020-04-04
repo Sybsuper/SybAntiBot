@@ -18,8 +18,8 @@ import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Main extends JavaPlugin {
 	public FileConfiguration config;
@@ -73,7 +73,7 @@ public class Main extends JavaPlugin {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (sender.hasPermission("sybrotate.rotate")) {
+		if (sender.hasPermission("sybantibot.rotate")) {
 			if (args.length >= 1) {
 				if (args[0].equalsIgnoreCase("reload")) {
 					reloadConfig();
