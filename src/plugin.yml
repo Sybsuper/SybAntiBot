@@ -6,4 +6,4 @@ commands:
     aliases: [rot]
     permission: sybantibot.use
     permission-message: You don't have permission to execute this command.
-    usage: /isbot <player> [yaw] [<pitch>]
+    usage: /isbot <player> [yaw] [pitch]
