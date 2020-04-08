@@ -103,7 +103,7 @@ public class Main extends JavaPlugin {
 								Location newLoc = p.getLocation();
 								Float pitch = Math.abs(newLoc.getPitch() - locOld.getPitch());
 								Float yaw = Math.abs(newLoc.getYaw() - locOld.getYaw()) % 360;
-								if ((pitch <= config.getDouble("maxDifference") && locOld.getPitch() != locChanged.getPitch()) || yaw <= config.getDouble("maxDifference")) {
+								if ((pitch <= config.getDouble("maxDifference") && pitch != 0 && locOld.getPitch() != locChanged.getPitch()) || (yaw <= config.getDouble("maxDifference") && yaw != 0)) {
 									List<String> commands = config.getStringList("commands");
 									for (String cmd : commands) {
 										Bukkit.getServer().dispatchCommand(getServer().getConsoleSender(), applyStuff(cmd, p, pitch, yaw));
