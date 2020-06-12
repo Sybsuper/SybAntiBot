@@ -4,6 +4,7 @@
 ticksBeforeCheck: 4
 maxDifference: 0.025
 delayBeforeRunBotCheck: 100
+delayedChecks: 3
 default:
   yaw: 3.0
   pitch: 3.0
@@ -17,6 +18,7 @@ ores:
   - REDSTONE_ORE
   - QUARTZ_ORE
   - LOG
+  - LOG_2
   - OAK_LOG
   - BIRCH_LOG
   - JUNGLE_LOG
@@ -32,6 +34,11 @@ messages:
 checkChanceOnOreMine: 0.05
 setback: false
 enableBypassPermission: true
+violations: 2
+clearViolations: 600
+notify:
+  enable: true
+  message: "&f[&cSybAntiBot&f] &l%player% &7might be using an &f&lauto-mine bot&7 (&f%violations%VL&7)."
 commands:
   - "kick %player% Bots are not allowed."
 return:

@@ -1,6 +1,6 @@
 name: SybAntiBot
 main: me.sybsuper.SybAntiBot.Main
-version: 1.1.4
+version: 1.2.0
 author: Sybsuper
 prefix: SybAntiBot
 description: Catch auto-mine bots and punish them.
@@ -10,3 +10,16 @@ commands:
     permission: sybantibot.isbot
     permission-message: You don't have permission to execute this command.
     usage: /isbot <player> [yaw] [pitch]
+permissions:
+  sybantibot.isbot:
+    description: Access to the /isbot command.
+    default: op
+  sybantibot.notify:
+    description: Sends a notification if a player is detected as a bot.
+    default: op
+  sybantibot.bypass:
+    description: Bypasses the antibot check.
+    default: op
+  sybantibot.reload:
+    description: Access to the /isbot reload command.
+    default: op

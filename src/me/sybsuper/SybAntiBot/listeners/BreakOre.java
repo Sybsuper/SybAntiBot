@@ -18,7 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class BreakOre implements Listener {
-	private Main plugin;
+	private final Main plugin;
 
 	public BreakOre(Main plugin) {
 		this.plugin = plugin;
@@ -39,26 +39,20 @@ public class BreakOre implements Listener {
 								Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "isbot " + e.getPlayer().getName());
 							}
 						}.runTaskLater(plugin, plugin.config.getInt("delayBeforeRunBotCheck"));
-						if (plugin.config.getInt("delayBeforeRunBotCheck") > 5) {
+						for (int i = 0; i < plugin.config.getInt("delayedChecks"); i++) {
 							new BukkitRunnable() {
 								@Override
 								public void run() {
 									Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "isbot " + e.getPlayer().getName());
 								}
-							}.runTaskLater(plugin, plugin.config.getInt("delayBeforeRunBotCheck") * 2);
-							new BukkitRunnable() {
-								@Override
-								public void run() {
-									Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "isbot " + e.getPlayer().getName());
-								}
-							}.runTaskLater(plugin, plugin.config.getInt("delayBeforeRunBotCheck") * 3);
+							}.runTaskLater(plugin, plugin.config.getInt("delayBeforeRunBotCheck") * (i + 1));
 						}
 						new BukkitRunnable() {
 							@Override
 							public void run() {
 								plugin.isBeingChecked.remove(e.getPlayer().getUniqueId().toString());
 							}
-						}.runTaskLater(plugin, plugin.config.getInt("delayBeforeRunBotCheck") * 4);
+						}.runTaskLater(plugin, plugin.config.getInt("delayBeforeRunBotCheck") * (plugin.config.getInt("delayedChecks") + 1));
 					}
 				}
 			}

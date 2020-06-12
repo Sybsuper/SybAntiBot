@@ -24,7 +24,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,6 +35,8 @@ public class Main extends JavaPlugin {
 	public List<String> isBeingChecked;
 	public List<String> isBeingChecked2;
 	public File logFile;
+	public HashMap<UUID, Integer> violations = new HashMap<>();
+	public BukkitRunnable clearViolations;
 
 	@Override
 	public void onEnable() {
@@ -104,12 +108,24 @@ public class Main extends JavaPlugin {
 								Float pitch = Math.abs(newLoc.getPitch() - locOld.getPitch());
 								Float yaw = Math.abs(newLoc.getYaw() - locOld.getYaw()) % 360;
 								if ((pitch <= config.getDouble("maxDifference") && pitch != 0 && locOld.getPitch() != locChanged.getPitch()) || (yaw <= config.getDouble("maxDifference") && yaw != 0)) {
-									List<String> commands = config.getStringList("commands");
-									for (String cmd : commands) {
-										Bukkit.getServer().dispatchCommand(getServer().getConsoleSender(), applyStuff(cmd, p, pitch, yaw));
+									violations.putIfAbsent(p.getUniqueId(), 0);
+									violations.put(p.getUniqueId(), violations.get(p.getUniqueId()) + 1);
+									if (violations.get(p.getUniqueId()) >= config.getInt("violations")) {
+										violations.put(p.getUniqueId(), 0);
+										List<String> commands = config.getStringList("commands");
+										for (String cmd : commands) {
+											Bukkit.getServer().dispatchCommand(getServer().getConsoleSender(), applyStuff(cmd, p, pitch, yaw));
+										}
+										sender.sendMessage(applyStuff(config.getString("return.bot"), p, pitch, yaw));
+										logToFile(applyStuff(config.getString("log.bot"), p, pitch, yaw));
 									}
-									sender.sendMessage(applyStuff(config.getString("return.bot"), p, pitch, yaw));
-									logToFile(applyStuff(config.getString("log.bot"), p, pitch, yaw));
+									if (config.getBoolean("notify.enable")) {
+										for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+											if (player.hasPermission("sybantibot.notify")) {
+												player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("notify.message")).replaceAll("%player%", p.getName()).replaceAll("%violations%", String.valueOf(violations.get(p.getUniqueId()))));
+											}
+										}
+									}
 								} else {
 									if (config.getBoolean("setback")) {
 										p.teleport(locOld);
@@ -149,6 +165,16 @@ public class Main extends JavaPlugin {
 			Logger l = Bukkit.getLogger();
 			l.log(Level.SEVERE, "There's something wrong with the 'plugins/SybAntiBot/config.yml' file, please check it.");
 		}
+		if (clearViolations != null) {
+			clearViolations.cancel();
+		}
+		clearViolations = new BukkitRunnable() {
+			@Override
+			public void run() {
+				violations.clear();
+			}
+		};
+		clearViolations.runTaskTimer(this, 20L, config.getInt("clearViolations") * 20);
 		if (config.getBoolean("log.enable")) {
 			File dataFolder = getDataFolder();
 			if (!dataFolder.exists()) {
